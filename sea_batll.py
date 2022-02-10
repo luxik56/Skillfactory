@@ -1,6 +1,8 @@
+# Загружаем библиотеку random
 from random import randint
 
 
+# Классы исключений прописываем тут:
 class BoardException(Exception):
     pass
 
@@ -14,7 +16,7 @@ class BoardUsedException(BoardException):
 
 class BoardWrongShipException(BoardException):
     pass
-
+# прописываем класс "точка"
 class Dot:
     def __init__(self, x, y):
         self.x = x
@@ -25,13 +27,14 @@ class Dot:
 
     def __repr__(self):
         return f"Dot({self.x}, {self.y})"
-
+# прописыввем класс "корабли"
 class Ship:
     def __init__(self, bow, l, o):
         self.bow = bow
         self.l = l
         self.o = o
         self.lives = l
+    # Применяем дикоратор @property:
     @property
     def dots(self):
         ship_dots = []
@@ -52,7 +55,9 @@ class Ship:
     def shooten(self, shot):
         return shot in self.dots
 
-
+# Прописываем поле. По заданию все верно, но
+# было бы интересней прописать систему координат ("буква" , "цифра")
+# код бы изменился. Постараюсь переделать его в git...
 class Board:
     def __init__(self, hid=False, size=6):
         self.size = size
@@ -132,7 +137,7 @@ class Board:
     def begin(self):
         self.busy = []
 
-
+# Прописываем класс игрок
 class Player:
     def __init__(self, board, enemy):
         self.board = board
@@ -150,14 +155,14 @@ class Player:
             except BoardException as e:
                 print(e)
 
-
+# прописываем класс ИИ
 class AI(Player):
     def ask(self):
         d = Dot(randint(0, 5), randint(0, 5))
         print(f"Ход компьютера: {d.x + 1} {d.y + 1}")
         return d
 
-
+# класс игрок и его ходы
 class User(Player):
     def ask(self):
         while True:
@@ -177,7 +182,7 @@ class User(Player):
 
             return Dot(x - 1, y - 1)
 
-
+# вывод досок после ходов.
 class Game:
     def try_board(self):
         lens = [3, 2, 2, 1, 1, 1, 1]
@@ -211,7 +216,7 @@ class Game:
 
         self.ai = AI(co, pl)
         self.us = User(pl, co)
-
+# вывод печатной информации в консоль
     def greet(self):
         print("-------------------")
         print("  Приветсвуем вас  ")
@@ -254,5 +259,6 @@ class Game:
     def start(self):
         self.greet()
         self.loop()
+# загрузка игры
 g = Game()
 g.start()
